@@ -1,0 +1,13 @@
+On Linux:
+
+Open terminal on this folder and do this command:
+./flash-linux.sh
+
+On Windows:
+
+Double click on the file flash-windows.bat
+
+On Mac:
+
+Open terminal on this folder and do this command:
+./flash-mac.sh
