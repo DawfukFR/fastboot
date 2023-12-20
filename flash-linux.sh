@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Flashing boot.img, dtbo.img, and vendor_boot.img using fastboot..."
+echo "Flashing boot.img, dtbo.img, vendor_boot.img and vendor_dlkm.img using fastboot..."
 
 # Get the path of the script
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -10,6 +10,7 @@ FASTBOOT="$SCRIPT_DIR/linux/fastboot"
 BOOT_IMG="$SCRIPT_DIR/boot.img"
 DTBO_IMG="$SCRIPT_DIR/dtbo.img"
 VENDOR_BOOT_IMG="$SCRIPT_DIR/vendor_boot.img"
+VENDOR_DLKM_IMG="$SCRIPT_DIR/vendor_dlkm.img"
 
 # Check if fastboot executable exists
 if [ ! -f "$FASTBOOT" ]; then
@@ -33,6 +34,11 @@ if [ ! -f "$VENDOR_BOOT_IMG" ]; then
     exit 1
 fi
 
+if [ ! -f "$VENDOR_DLKM_IMG" ]; then
+    echo "Error: vendor_dlkm.img not found at $VENDOR_DLKM_IMG"
+    exit 1
+fi
+
 # Flash the image files using fastboot
 "$FASTBOOT" flash boot "$BOOT_IMG"
 if [ $? -ne 0 ]; then
@@ -49,6 +55,12 @@ fi
 "$FASTBOOT" flash vendor_boot "$VENDOR_BOOT_IMG"
 if [ $? -ne 0 ]; then
     echo "Error: Failed to flash vendor_boot.img"
+    exit 1
+fi
+
+"$FASTBOOT" flash vendor_dlkm "$VENDOR_DLKM_IMG"
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to flash vendor_dlkm.img"
     exit 1
 fi
 
